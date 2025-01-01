@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace FileServer.API.Models.Data;
+namespace Vorn.File.Host.Models.Data;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
 {
-	public DbSet<JFile>? Files { get; set; }
+	public DbSet<FileInformation>? Files { get; set; }
 }

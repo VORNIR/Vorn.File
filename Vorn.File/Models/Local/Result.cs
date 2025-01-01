@@ -1,4 +1,4 @@
-﻿namespace FileServer.API.Models.Local;
+﻿namespace Vorn.File.Host.Models.Local;
 
 public class Result<T>
 {

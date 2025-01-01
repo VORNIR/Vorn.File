@@ -2,11 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <RootNamespace>FileServer.API</RootNamespace>
     <Nullable>enable</Nullable>
-    <UserSecretsId>a8dfe8cd-f66b-4db3-a867-90c9099b7be8</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,12 +26,7 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="uploads\keithpixel.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Folder Include="uploads\" />
   </ItemGroup>
 
 </Project>
