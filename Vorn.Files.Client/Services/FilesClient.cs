@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text.Json;
@@ -10,19 +11,13 @@ public class FilesClient(HttpClient httpClient, IOptions<VornOptions> options)
 {
     private readonly JsonSerializerOptions jsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
 
-    public async Task<FileInformationDto?> UploadFile(Stream fileStream, string contentType, CancellationToken cancellationToken = default)
+    public async Task<FileInformationDto?> UploadFile(Stream memoryStream, string contentType, CancellationToken cancellationToken = default)
     {
-        // Compute MD5 hash of the file stream
-        string checksum = ComputeSHA256Checksum(fileStream);
-
-        // Reset the fileStream position to ensure it's read from the beginning
-        fileStream.Position = 0;
-
-        using MultipartFormDataContent content = new MultipartFormDataContent();
-        using StreamContent fileContent = new StreamContent(fileStream);
+        string checksum = await ComputeSHA256Checksum(memoryStream, cancellationToken);
+        using MultipartFormDataContent content = [];
+        using StreamContent fileContent = new(memoryStream);
         fileContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
 
-        // Add the file content
         content.Add(fileContent, "file", "fileName");
 
         content.Headers.Add("Content-Checksum", checksum);
@@ -36,11 +31,12 @@ public class FilesClient(HttpClient httpClient, IOptions<VornOptions> options)
 
         return fileInformation;
     }
-
-    static string ComputeSHA256Checksum(Stream fileStream)
+    public async Task<FileInformationDto?> UploadFile(byte[] data, string contentType, CancellationToken cancellationToken = default) => await UploadFile(new MemoryStream(data), contentType, cancellationToken);
+    static async Task<string> ComputeSHA256Checksum(Stream stream, CancellationToken cancellationToken = default)
     {
-        using var sha256 = SHA256.Create();
-        byte[] hashBytes = sha256.ComputeHash(fileStream);
+        using SHA256 sha256 = SHA256.Create();
+        byte[] hashBytes = await sha256.ComputeHashAsync(stream, cancellationToken);
+        stream.Position = 0;
         return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
     }
 

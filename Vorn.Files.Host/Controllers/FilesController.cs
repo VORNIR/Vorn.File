@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Threading.Tasks;
 using Vorn.Files.Host.Models;
 using Vorn.Files.Host.Services;
@@ -27,7 +28,7 @@ public class FilesController(RepositoryService fileService) : ControllerBase
 
         // Compute MD5 hash of the uploaded file
         using Stream stream = file.OpenReadStream();
-        string checksum = ComputeSHA256Checksum(stream);
+        string checksum = await ComputeSHA256Checksum(stream);
 
         // Compare the computed hash with the one provided in the request header
         if(contentChecksum == null || !contentChecksum.Equals(checksum, StringComparison.OrdinalIgnoreCase))
@@ -44,10 +45,12 @@ public class FilesController(RepositoryService fileService) : ControllerBase
         return Ok(result);
     }
 
-    static string ComputeSHA256Checksum(Stream fileStream)
+
+    static async Task<string> ComputeSHA256Checksum(Stream stream, CancellationToken cancellationToken = default)
     {
         using SHA256 sha256 = SHA256.Create();
-        byte[] hashBytes = sha256.ComputeHash(fileStream);
+        byte[] hashBytes = await sha256.ComputeHashAsync(stream, cancellationToken);
+        stream.Position = 0;
         return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
     }
 
