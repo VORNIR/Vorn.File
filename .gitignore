@@ -361,6 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/Vorn.File/appsettings.json
-/Vorn.File/appsettings.Development.json
-/Vorn.File/uploads
+
+# Vorn
+/Vorn.Files.Host/appsettings.json
+/Vorn.Files.Host/appsettings.Development.json
+/Vorn.Files.Host/Uploads/
+/Vorn.Files.Host/Properties
