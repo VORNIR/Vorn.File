@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+	</PropertyGroup>
+	<PropertyGroup>
+		<PackageId>Vorn.Files.Client</PackageId>
+		<RepositoryUrl>https://github.com/VORNIR/Vorn.Files</RepositoryUrl>
+		<Version>1.0.0</Version>
+		<Authors>Vorn</Authors>
+		<Company>Vorn</Company>
+		<Product>Vorn.Files.Client</Product>
+		<Title>Vorn Files Client</Title>
+		<Description>
+			This library is designed as part of web applications which are clients who get file hosting as a service from a Vorn.Files.Host.
+		</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Duende.IdentityModel" Version="7.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.*" />
+	</ItemGroup>
+	<Target Name="PostBuild" Condition="'$(Configuration)' == 'Release' AND '$(BuildingInsideVisualStudio)' == 'true' " AfterTargets="PostBuildEvent">
+		<Exec Command=" del *.nupkg " WorkingDirectory="bin\Release" />
+		<Exec Command=" dotnet pack --configuration Release  --output bin/Release" />
+		<Exec Command=" dotnet nuget push *.nupkg  --source https://api.nuget.org/v3/index.json " WorkingDirectory="bin\Release" />
+	</Target>
+
+</Project>

@@ -1,8 +1,6 @@
-﻿using System;
+﻿namespace Vorn.Files.Client;
 
-namespace Vorn.File.Host.Models.Data;
-
-public class FileInformation
+public class FileInformationDto
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Extension { get; set; }
