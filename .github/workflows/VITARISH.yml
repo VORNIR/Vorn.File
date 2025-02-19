@@ -1,0 +1,23 @@
+name: VITARISH.NET
+
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: ./Vorn.Files.Host
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Publish
+      run: dotnet publish -c Release -r win-x64 --self-contained false --output ${{ github.workspace }}/Publish
+    - name: Sync
+      uses: SamKirkland/FTP-Deploy-Action@4.3.0
+      with:
+        server: ftp.vitarish.ir
+        username: ${{ secrets.VITARISH_FTP_USERNAME }}
+        password: ${{ secrets.VITARISH_FTP_PASSWORD }}
+        dry-run: false
+        local-dir: ${{ github.workspace }}/Publish/
