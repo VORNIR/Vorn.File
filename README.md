@@ -1,2 +1,20 @@
 # Vorn.Files
-ASP.NET CORE Web API for uploading files to a server and storing the records in a database. 
+Sample `appsettings.json`:
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "Vorn": {
+    "File": {
+      "BaseUrl": "https://localhost:9454",
+      "UploadPath": "uploads",
+      "FileInformationsFile": "uploads/FileInformations.xml"
+    }
+  }
+}
+```
