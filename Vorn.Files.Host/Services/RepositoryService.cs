@@ -21,7 +21,7 @@ public class RepositoryService(IOptions<VornOptions> options, FileInformationsSe
         }
 
         FileInformation fileInformation = new();
-        string baseServerPath = Path.Combine(Directory.GetCurrentDirectory(), options.Value.Files.UploadPath);
+        string baseServerPath = Path.Combine(Environment.CurrentDirectory, options.Value.Files.UploadPath);
         string extension = MimeTypesMap.GetExtension(file.ContentType);
         string newFileName = $"{options.Value.Files.Prefix}-{fileInformation.Id}.{extension}";
         string serverPath = Path.Combine(baseServerPath, newFileName);
