@@ -2,6 +2,7 @@ name: VITARISH.NET
 
 on:
   workflow_dispatch:
+  push:
 jobs:
   build:
     runs-on: windows-latest
